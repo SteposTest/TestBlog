@@ -24,22 +24,22 @@
   <body>
     {% block content %}
     {% if posts %}
-    <div>
-      <ul>
-        {% for post in posts %}
-        <li>
-          <h2>{{ post.title }}</h2>
-        </li>
-        {{ post.text }}
-        <br><br>
-        {{ post.user_profile.user.username }}
-        <br>
-        {{ post.pub_date }}
-        {% endfor %}
-      </ul>
-    </div>
+      <div>
+        <ul>
+          {% for post in posts %}
+          <li>
+            <h2>{{ post.title }}</h2>
+          </li>
+          {{ post.text }}
+          <br><br>
+          {{ post.user_profile.user.username }}
+          <br>
+          {{ post.pub_date }}
+          {% endfor %}
+        </ul>
+      </div>
     {% else %}
-    <p>There are no posts.</p>
+      <p>There are no posts.</p>
     {% endif %}
     {% endblock %}
   </body>

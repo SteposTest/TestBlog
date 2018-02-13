@@ -1,0 +1,48 @@
+<style>
+  .head-block {
+    display: flex;
+    justify-content:flex-end;
+    width: 100%;
+    text-align: center;
+  }
+  .head-inline:first-child {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+</style>
+<html>
+<head>
+  <div class="head-block">
+    <div class="head-inline">
+      <h1>Blog posts</h1>
+    </div>
+    <div class="head-inline">
+      <h3>{{ user.username }}</h3>
+      <a href="/create_post/">Create post</a>
+    </div>
+  </div>
+</head>
+<body>
+{% block content %}
+{% if posts %}
+<div>
+  <ul>
+    {% for post in posts %}
+    <li>
+      <h2>{{ post.title }}</h2>
+    </li>
+    {{ post.text }}
+    <br><br>
+    {{ post.user_profile.user.username }}
+    <br>
+    {{ post.pub_date }}
+    {% endfor %}
+  </ul>
+</div>
+{% else %}
+<p>There are no posts.</p>
+{% endif %}
+{% endblock %}
+</body>
+</html>
