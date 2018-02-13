@@ -1,6 +1,25 @@
+<style>
+  .head-block {
+    display: flex;
+    justify-content:flex-end;
+    width: 100%;
+    text-align: center;
+  }
+  .head-inline:first-child {
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
 <html>
   <head>
-    <h1 align="center">Blog posts</h1>
+    <div class="head-block">
+      <div class="head-inline">
+        <h1>Blog posts</h1>
+      </div>
+      <div class="head-inline">
+        <h3><a href="/login/">Login</a></h3>
+      </div>
+    </div>
   </head>
   <body>
     {% block content %}
