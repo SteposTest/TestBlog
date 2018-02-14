@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views.generic import CreateView, View, list
 
@@ -12,7 +13,7 @@ class PostViews(list.ListView):
     filter = None
 
     def get_template_names(self):
-        auth = self.request.user.is_authenticated()
+        auth = self._is_authenticated()
         return 'user_posts.html' if auth else 'all_posts.html'
 
     def dispatch(self, request, *args, **kwargs):
@@ -20,15 +21,19 @@ class PostViews(list.ListView):
         return super(PostViews, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        if self.filter is not None:
-            return self._get_query()
+        if self._is_authenticated():
+            return self.get_queryset_impl()
         return Post.objects.all()
 
-    @check_authenticated
-    def _get_query(self):
+    def get_queryset_impl(self):
         user = self.request.user.profile
+        queryset = Post.objects.all()
         if self.filter == '1':
-            return Post.objects.filter(user_profile=user)
+            return queryset.filter(user_profile=user)
+        return queryset.exclude(pk__in=user.viewed)
+
+    def _is_authenticated(self):
+        return self.request.user.is_authenticated()
 
 
 class LoginViews(View):
@@ -58,6 +63,25 @@ class CreatePostViews(CreateView):
                 text=result['text'],
                 user_profile=request.user.profile
             )
-            return redirect('/')
+            return redirect('/?filter_info=1')
         except:
             return redirect('/create_post/')
+
+
+class PostsActions(View):
+    @check_authenticated
+    def dispatch(self, request, *args, **kwargs):
+        self.action = request.GET.get('action', None)
+        self.user_name = request.GET.get('name', None)
+        self.post_id = request.GET.get('id', None)
+        return super(PostsActions, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        user = request.user.profile
+        if self.action == '1':
+            sub_user = User.objects.get(username=self.user_name).profile
+        if self.action == '2':
+            if self.post_id not in user.viewed:
+                user.viewed.append(self.post_id)
+                user.save()
+        return redirect('/')

@@ -10,5 +10,8 @@ def create_user_profile(sender, instance, created, **kwargs):
     if instance.is_superuser:
         return
     if created:
-        Profile.objects.create(user=instance)
+        Profile.objects.create(
+            user=instance,
+            viewed=[]
+        )
     instance.profile.save()
