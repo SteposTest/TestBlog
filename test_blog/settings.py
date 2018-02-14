@@ -107,3 +107,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Email info
+
+EMAIL_HOST = os.environ['EMAIL_HOST']
+
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+
+# Other
+
+LOGIN_URL = '/login/'
+
+BASE_URL = os.environ['BASE_URL']

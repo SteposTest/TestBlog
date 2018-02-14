@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.views.generic import CreateView, View, list
+from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, DetailView, View, list
 
 from .models import Post, Profile
-from .utils.views_utils import check_authenticated
 
 
 class PostViews(list.ListView):
@@ -39,6 +40,12 @@ class PostViews(list.ListView):
         return self.request.user.is_authenticated()
 
 
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'post_detail.html'
+    context_object_name = 'post'
+
+
 class LoginViews(View):
     def get(self, request):
         return render(request, 'login.html')
@@ -56,7 +63,7 @@ class CreatePostViews(CreateView):
     template_name = 'create_post.html'
     fields = ['title', 'text']
 
-    @check_authenticated
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         try:
             result = request.POST
@@ -71,7 +78,7 @@ class CreatePostViews(CreateView):
 
 
 class PostsActions(View):
-    @check_authenticated
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.action = request.GET.get('action', None)
         self.user_id = request.GET.get('user_id', None)
