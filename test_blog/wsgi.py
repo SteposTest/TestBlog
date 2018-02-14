@@ -9,5 +9,6 @@ application = get_wsgi_application()
 
 import_module('blog.utils.models_signal_utils')
 
-test_db = import_module('blog.utils.test_db')
-test_db.create_db()
+create_test_db = os.environ['TEST_DB']
+if create_test_db:
+    import_module('blog.utils.test_db').create_db()

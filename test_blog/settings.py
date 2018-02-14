@@ -11,9 +11,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'tpu1d(*7d3-4uejvuxggejf8v@r%9&)28byy4!dd0)y8^^v%4y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = []
+BASE_URL = os.environ['BASE_URL']
+
+ALLOWED_HOSTS = [BASE_URL]
 
 
 # Application definition
@@ -108,6 +110,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = BASE_DIR
+
 # Email info
 
 EMAIL_HOST = os.environ['EMAIL_HOST']
@@ -119,5 +123,3 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 # Other
 
 LOGIN_URL = '/login/'
-
-BASE_URL = os.environ['BASE_URL']
