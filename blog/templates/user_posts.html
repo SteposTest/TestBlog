@@ -22,8 +22,8 @@
     <div class="head-inline">
       <p>{{ user.username }}</p>
       <p><a href="/create_post/">Create post</a></p>
-      <p><a href="/?filter_info=1">My blog</a></p>
-      <p><a href="/?filter_info=2">Subscriptions</a></p>
+      <p><a href="/?filter_info=my">My blog</a></p>
+      <p><a href="/?filter_info=subscription">Subscriptions</a></p>
       <p><a href="/">All</a></p>
     </div>
   </div>
@@ -42,8 +42,11 @@
     <div class="body-inline">
       {{ post.user_profile.user.username }}
     </div>
-    <p class="body-inline"><a href="/action/?action=1&name={{ post.user_profile.user.username }}">Subscribe</a></p>
-    <p class="body-inline"><a href="/action/?action=2&id={{ post.pk }}">Hide</a></p>
+    <p class="body-inline"><a href="/action/?action=subscriptions&user_id={{ post.user_profile.pk }}">Subscribe</a></p>
+    <p class="body-inline">
+      <a href="/action/?action=unsubscribe&user_id={{ post.user_profile.pk }}">Unsubscribe</a>
+    </p>
+    <p class="body-inline"><a href="/action/?action=hide&post_id={{ post.pk }}">Hide</a></p>
     <br>
     {{ post.pub_date }}
     {% endfor %}
