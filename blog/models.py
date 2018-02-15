@@ -8,6 +8,7 @@ MAX_LENGTH = 255
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     subscription = models.ManyToManyField('self', blank=True, symmetrical=False)
+    # TODO create intermediate model with views
     viewed = JSONField(blank=True, null=True)
 
     def __str__(self):

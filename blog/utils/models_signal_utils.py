@@ -27,7 +27,7 @@ def send_notification(sender, instance, created, **kwargs):
     users = instance.user_profile.profile_set.all()
     recipient_list = [i.user.email for i in users if i.user.email]
     subject = 'New post'
-    body = f'{user.username} created new post {settings.BASE_URL}/post/{instance.pk}'
+    body = f'{user.username} created new post {settings.BASE_URL}/post/{instance.pk}/'
     EmailThread(subject, body, settings.EMAIL, recipient_list).start()
 
 

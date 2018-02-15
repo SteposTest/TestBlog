@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from .views import PostsActions, CreatePostViews, LoginViews, PostViews, PostDetail
 
+# TODO ^action/$ -> ^action/(\w+)/$ and ^filter/(\w+)/$
 urlpatterns = [
     url(r'^action/$', PostsActions.as_view(), name='cerate_views'),
     url(r'^create_post/$', CreatePostViews.as_view(), name='cerate_views'),

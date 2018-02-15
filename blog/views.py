@@ -10,14 +10,14 @@ from .models import Post, Profile
 class PostViews(list.ListView):
     model = Post
     context_object_name = 'posts'
-    filter = None
+    post_filter = None
 
     def get_template_names(self):
         auth = self._is_authenticated()
         return 'user_posts.html' if auth else 'all_posts.html'
 
     def dispatch(self, request, *args, **kwargs):
-        self.filter = request.GET.get('filter_info', None)
+        self.post_filter = request.GET.get('filter_info', None)
         return super(PostViews, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -28,9 +28,9 @@ class PostViews(list.ListView):
 
     def get_queryset_impl(self, queryset):
         user = self.request.user.profile
-        if self.filter == 'my':
+        if self.post_filter == 'my':
             queryset = queryset.filter(user_profile=user)
-        elif self.filter == 'subscription':
+        elif self.post_filter == 'subscription':
             queryset = queryset.filter(user_profile__in=user.subscription.all())
         if user.viewed:
             queryset = queryset.exclude(pk__in=user.viewed)
@@ -72,7 +72,7 @@ class CreatePostViews(CreateView):
                 text=result['text'],
                 user_profile=request.user.profile
             )
-            return redirect('/?filter_info=1')
+            return redirect('/?filter_info=my')
         except:
             return redirect('/create_post/')
 
